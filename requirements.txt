@@ -1,0 +1,5 @@
+discord.py
+pymongo
+certifi
+python-dotenv
+flask
