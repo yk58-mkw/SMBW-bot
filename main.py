@@ -260,7 +260,7 @@ class RecruitView(discord.ui.View):
             mentions = " ".join([p.mention for p in self.participants])
             await thread.send(f"{mentions}\nメンバーが集まりました！\nホストのフレンドコード: `{self.fc}`")
         else:
-            await message.edit(content=f"🚫 {self.host.mention}の募集はキャンセルされました。", embed=None, view=None)
+            await message.edit(content=f"🚫 メンバーが集まらなかったため、 {self.host.mention}の募集はキャンセルされました。", embed=None, view=None)
 
 # --- オートコンプリート ---
 async def course_autocomplete(interaction: discord.Interaction, current: str) -> list[app_commands.Choice[str]]:
@@ -353,7 +353,7 @@ async def ta_cmd(interaction: discord.Interaction, category: app_commands.Choice
 
     time_ms = parse_time(time_str)
     if time_ms < 0:
-        await interaction.followup.send("❌ タイムの形式が正しくありません。")
+        await interaction.followup.send("❌ タイムの形式が正しくありません。 `12.34` または `123.45` の形式で入力してください。")
         return
 
     existing = ta_collection.find_one({"user_id": user_id_str, "category_id": cat_id, "course_id": course})
@@ -366,7 +366,7 @@ async def ta_cmd(interaction: discord.Interaction, category: app_commands.Choice
         {"$set": {"user_name": interaction.user.display_name, "time_ms": time_ms, "timestamp": datetime.datetime.now(datetime.timezone.utc)}},
         upsert=True
     )
-    await interaction.followup.send(f"新記録！\n**{COURSES[cat_id][course]}**: `{format_time(time_ms)}`")
+    await interaction.followup.send(f"新記録を登録しました！\n**{COURSES[cat_id][course]}**: `{format_time(time_ms)}`")
     asyncio.create_task(asyncio.to_thread(update_web_ranking))
 
 @bot.tree.command(name="ta_ranking", description="ランキングを表示します")
