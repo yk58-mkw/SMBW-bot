@@ -199,7 +199,7 @@ def update_web_ranking():
 
         json_str = json.dumps(data_to_send, ensure_ascii=False)
         url = "https://yamakyu5800.stars.ne.jp/SMBW/update_ranking.php"
-        data = urllib.parse.urlencode({'key': 'mario_wonder_secret', 'json': json_str}).encode('utf-8')
+        data = urllib.parse.urlencode({'key': 'qiThax-kowga7-nuwmiv', 'json': json_str}).encode('utf-8')
         req = urllib.request.Request(url, data=data)
         with urllib.request.urlopen(req) as response:
             print(f"Web更新完了: {response.read().decode('utf-8')}")
