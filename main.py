@@ -325,6 +325,18 @@ async def recruit_host(interaction: discord.Interaction, end_time: str, min_p: i
         await view.start_session(fetched_message)
     except: pass
 
+@bot.tree.command(name="reload", description="Webサイトのランキング情報を手動で最新に更新します")
+async def reload_cmd(interaction: discord.Interaction):
+    await interaction.response.defer() # 通信によるタイムアウトを防ぐため最初にdefer
+    
+    try:
+        # 他のBotの動作を止めないように非同期（スレッド）で実行
+        await asyncio.to_thread(update_web_ranking)
+        await interaction.followup.send("Webサイトのランキング情報を最新に更新しました！\n反映されるまで数秒かかる場合があります。")
+    except Exception as e:
+        print(f"/reload 実行時エラー: {e}")
+        await interaction.followup.send("❌ Webサイトの更新中にエラーが発生しました。")
+
 @bot.tree.command(name="ta", description="タイムアタックの記録を登録します")
 @app_commands.choices(category=[
     app_commands.Choice(name="訓練(コイン)", value="kinopio_coin"),
